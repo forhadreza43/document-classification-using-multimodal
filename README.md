@@ -1,5 +1,4 @@
-
-##Clone the repository
+## Clone the repository
 
    ```bash
 https://github.com/forhadreza43/Deep-metric-learning-for-end-to-end-document-classification.git

@@ -15,8 +15,8 @@ class Paths:
 class TrainConfig:
     model_name: str = "bert-base-uncased"  # paper uses BERT for English
     max_length: int = 128                  # GPU run: increase to 512, paper uses 512
-    batch_size: int = 8                   # GPU run: increase to 128
-    min_per_class: int = 4                 # GPU run: increase to 4, paper: ensure enough positives per class in batch
+    batch_size: int = 8                    # GPU run: increase to 128
+    min_per_class: int = 4                 # GPU run: increase to 8, paper: ensure enough positives per class in batch
     lr: float = 2e-5
     weight_decay: float = 0.01
     epochs: int = 1                        # CPU debug: keep 1; GPU run: increase (3-5)

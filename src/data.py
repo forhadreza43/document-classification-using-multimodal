@@ -44,9 +44,20 @@ def resolve_to_text_path(qs_root: Path, rel_path: str) -> Path:
     If rel_path points to image (tif/png/jpg), map to the QS-OCR-Large text file if possible.
     If it already ends with .txt, use as is.
     """
+    #
+    # p = Path(rel_path)
+    # if p.suffix.lower() != ".txt":
+    #     p = p.with_suffix(".txt")
+    # return qs_root / p
+
+    # Normalize slashes
+    rel_path = rel_path.replace("\\", "/").lstrip("./")
+
     p = Path(rel_path)
+    # Map image -> txt
     if p.suffix.lower() != ".txt":
         p = p.with_suffix(".txt")
+
     return qs_root / p
 
 class RVLCDIPOCRTextDataset(Dataset):

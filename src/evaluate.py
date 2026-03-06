@@ -49,9 +49,10 @@ def main():
 
     ckpt = torch.load(args.ckpt, map_location="cpu")
     model_name = ckpt["model_name"]
-    num_classes = ckpt["num_classes"]
-    label_to_new = ckpt["label_to_new"]
+    # num_classes = ckpt["num_classes"]
+    # label_to_new = ckpt["label_to_new"]
     max_length = ckpt["max_length"]
+    num_classes = 16
 
     model = BertDocClassifier(model_name, num_classes=num_classes).to(device)
     model.load_state_dict(ckpt["model_state"])
@@ -81,15 +82,15 @@ def main():
     )
 
     # Apply same label remap as training (unknown labels in debug subset are dropped for fairness)
-    def remap_inplace(ds):
-        new_items = []
-        for p, y in ds.items:
-            if y in label_to_new:
-                new_items.append((p, label_to_new[y]))
-        ds.items = new_items
-
-    remap_inplace(val_ds)
-    remap_inplace(test_ds)
+    # def remap_inplace(ds):
+    #     new_items = []
+    #     for p, y in ds.items:
+    #         if y in label_to_new:
+    #             new_items.append((p, label_to_new[y]))
+    #     ds.items = new_items
+    #
+    # remap_inplace(val_ds)
+    # remap_inplace(test_ds)
 
     val_loader = DataLoader(val_ds, batch_size=16, shuffle=False, num_workers=0)
     test_loader = DataLoader(test_ds, batch_size=16, shuffle=False, num_workers=0)
@@ -97,15 +98,24 @@ def main():
 
     # --- Build FAISS index from TRAIN embeddings ---
     # For evaluation sanity test we index the TRAIN DEBUG subset too (consistent with your constraint).
+    # train_ds = RVLCDIPOCRTextDataset(
+    #     qs_root=paths.qs_ocr_large_dir,
+    #     split_file=paths.train_list,
+    #     tokenizer_name=model_name,
+    #     max_length=max_length,
+    #     debug_samples=cfg.debug_samples,
+    #     allowed_labels=set(label_to_new.keys()),
+    # )
+    # train_ds.items = [(p, label_to_new[y]) for (p, y) in train_ds.items]
+    # train_loader = DataLoader(train_ds, batch_size=16, shuffle=False, num_workers=0)
+
     train_ds = RVLCDIPOCRTextDataset(
         qs_root=paths.qs_ocr_large_dir,
         split_file=paths.train_list,
         tokenizer_name=model_name,
         max_length=max_length,
         debug_samples=cfg.debug_samples,
-        allowed_labels=set(label_to_new.keys()),
     )
-    train_ds.items = [(p, label_to_new[y]) for (p, y) in train_ds.items]
     train_loader = DataLoader(train_ds, batch_size=16, shuffle=False, num_workers=0)
 
     train_emb, train_logits, train_y = extract_embeddings_and_logits(model, train_loader, device=str(device))

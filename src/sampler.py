@@ -9,7 +9,7 @@ class MinPerClassBatchSampler(Sampler[List[int]]):
     Ensures each batch contains at least `min_per_class` samples for each selected class.
     Batch size must be divisible by min_per_class.
 
-    This matches the paper's intent: ensure enough positives in each minibatch for contrastive loss.
+    Paper intent: ensure enough positives in each minibatch for contrastive loss.
     """
     def __init__(self, labels: List[int], batch_size: int, min_per_class: int, seed: int = 42):
         assert batch_size % min_per_class == 0, "batch_size must be divisible by min_per_class"
@@ -33,23 +33,22 @@ class MinPerClassBatchSampler(Sampler[List[int]]):
             self.rng.shuffle(self.class_to_indices[c])
 
     def __iter__(self) -> Iterator[List[int]]:
-        # Create rolling pointers for each class
         ptr = {c: 0 for c in self.valid_classes}
 
-        # approximate epoch length: use total indices available among valid classes
         total = sum(len(self.class_to_indices[c]) for c in self.valid_classes)
         num_batches = max(1, total // self.batch_size)
 
         for _ in range(num_batches):
             batch: List[int] = []
-            chosen_classes = self.rng.sample(self.valid_classes, k=min(self.classes_per_batch, len(self.valid_classes)))
+
+            # IMPORTANT: allow class repetition so we do not require more distinct classes than exist.
+            chosen_classes = [self.rng.choice(self.valid_classes) for _ in range(self.classes_per_batch)]
 
             for c in chosen_classes:
                 idxs = self.class_to_indices[c]
                 start = ptr[c]
                 end = start + self.min_per_class
 
-                # if not enough left, reshuffle and restart
                 if end > len(idxs):
                     self.rng.shuffle(idxs)
                     start = 0
@@ -59,7 +58,7 @@ class MinPerClassBatchSampler(Sampler[List[int]]):
                 batch.extend(idxs[start:end])
                 ptr[c] = end
 
-            # If we sampled fewer classes than needed, fill by repeating class sampling
+            # Fill if short (should be rare now)
             while len(batch) < self.batch_size:
                 c = self.rng.choice(self.valid_classes)
                 idxs = self.class_to_indices[c]
