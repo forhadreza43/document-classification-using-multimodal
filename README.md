@@ -25,7 +25,7 @@ Project/
     knn_ood.py
     metrics.py
     train.py
-    evaluate.py
+    classification_eval.py
 ```
 
 Add all the datasets along with project structure.
@@ -51,10 +51,10 @@ Train (debug)
 
 Evaluate (KNN, no agreement)
    ```bash
-   python src/evaluate.py --project_root "D:\Thesis\Project" --ckpt checkpoints/bert_margin_star_debug.pt
+   python src/classification_eval.py --project_root "D:\Thesis\Project" --ckpt checkpoints/bert_margin_star_debug.pt
    ```
 
 Evaluate (KNN* with consensus agreement)
    ```bash
-   python src/evaluate.py --project_root "D:\Thesis\Project" --ckpt checkpoints\bert_margin_star_debug.pt --use_knn_star
+   python src/classification_eval.py --project_root "D:\Thesis\Project" --ckpt checkpoints\bert_margin_star_debug.pt --use_knn_star
    ```

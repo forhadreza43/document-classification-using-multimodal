@@ -1,58 +1,61 @@
+Image to Text one time:
+python src/generate_text_from_image.py --project_root "F:\Project" --tesseract_cmd "C:\Program Files\Tesseract-OCR\tesseract.exe"
+
 
 Exact commands for your full run (CPU machine)
 
 Train (debug)
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss margin_star
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss margin
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss scl
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss weight
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss ce
+python src/train.py --project_root "F:\Project" --save_dir checkpoints
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss margin_star
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss margin
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss scl
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss weight
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss ce
 
 Classification result (RVL-CDIP)
-python src/compare_classificaton_result.py --project_root "D:\Thesis\Project" --ckpt_dir checkpoints --suffix debug
+python src/compare_classificaton_result.py --project_root "F:\Project" --ckpt_dir checkpoints --suffix debug
 
 Novelty detection result
-python src/novelty_detecton_result.py --project_root "D:\Thesis\Project" --ckpt_dir checkpoints --suffix debug
-python src/novelty_detecton_result_99PRE.py --project_root "D:\Thesis\Project" --ckpt_dir checkpoints --suffix debug
+python src/novelty_detecton_result.py --project_root "F:\Project" --ckpt_dir checkpoints --suffix debug
+python src/novelty_detecton_result_99PRE.py --project_root "F:\Project" --ckpt_dir checkpoints --suffix debug
 
 Rejection
-python src/rejection_effectiveness.py --project_root "D:\Thesis\Project"
+python src/rejection_effectiveness.py --project_root "F:\Project"
 
 Evaluate (KNN, no agreement)
-python src/evaluate.py --project_root "D:\Thesis\Project" --ckpt checkpoints\bert_margin_star_debug.pt
-python src/novelty_detecton_result.py --project_root "D:\Thesis\Project" --ckpt checkpoints\bert_margin_star_debug.pt
+python src/classification_eval.py --project_root "F:\Project" --ckpt checkpoints\bert_margin_star_debug.pt
+python src/novelty_detecton_result.py --project_root "F:\Project" --ckpt checkpoints\bert_margin_star_debug.pt
 
 Evaluate (KNN* with consensus agreement)
-python src/evaluate.py --project_root "D:\Thesis\Project" --ckpt checkpoints\bert_margin_star_debug.pt --use_knn_star
+python src/classification_eval.py --project_root "F:\Project" --ckpt checkpoints\bert_margin_star_debug.pt --use_knn_star
 
 
 
 Exact commands for your full run (GPU machine)
 
 Train full dataset
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss margin_star
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss margin
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss scl
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss weight
-python src/train.py --project_root "D:\Thesis\Project" --save_dir checkpoints --loss ce
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss margin_star
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss margin
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss scl
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss weight
+python src/train.py --project_root "F:\Project" --save_dir checkpoints --loss ce
 
 Classification result (RVL-CDIP)
-python src/compare_classificaton_result.py --project_root "D:\Thesis\Project" --ckpt_dir checkpoints --suffix full
+python src/compare_classificaton_result.py --project_root "F:\Project" --ckpt_dir checkpoints --suffix full
 
 Novelty detection result
-python src/novelty_detecton_result.py --project_root "D:\Thesis\Project" --ckpt_dir checkpoints --suffix full
-python src/novelty_detecton_result_99PRE.py --project_root "D:\Thesis\Project" --ckpt_dir checkpoints --suffix full
+python src/novelty_detecton_result.py --project_root "F:\Project" --ckpt_dir checkpoints --suffix full
+python src/novelty_detecton_result_99PRE.py --project_root "F:\Project" --ckpt_dir checkpoints --suffix full
 
 Rejection
-python src/rejection_effectiveness.py --project_root "D:\Thesis\Project" --suffix full
+python src/rejection_effectiveness.py --project_root "F:\Project" --suffix full
 
 Evaluate KNN
-python src/evaluate.py --project_root "D:\Thesis\Project" --ckpt checkpoints\bert_margin_star_full.pt
-python src/novelty_detecton_result.py --project_root "D:\Thesis\Project" --ckpt checkpoints\bert_margin_star_full.pt
+python src/classification_eval.py --project_root "F:\Project" --ckpt checkpoints\bert_margin_star_full.pt
+python src/novelty_detecton_result.py --project_root "F:\Project" --ckpt checkpoints\bert_margin_star_full.pt
 
 Evaluate KNN*
-python src/evaluate.py --project_root "D:\Thesis\Project" --ckpt checkpoints\bert_margin_star_full.pt --use_knn_star
+python src/classification_eval.py --project_root "F:\Project" --ckpt checkpoints\bert_margin_star_full.pt --use_knn_star
 
 
 

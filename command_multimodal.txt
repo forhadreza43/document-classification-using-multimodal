@@ -1,0 +1,50 @@
+Generate boxes for rvl-cdip - one time
+python src/generate_ocr_boxes_tesseract.py --project_root "F:\Project" --missing_only --limit 20 --tesseract_cmd "C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+Debug mode:
+Commands for Phase 1
+Train debug
+python src/train_multimodal.py --project_root "F:\Project" --save_dir checkpoints
+
+Evaluate debug
+python src/classification_eval_multimodal.py --project_root "F:\Project" --ckpt checkpoints\layoutlmv3_debug.pt
+
+
+Commands for Phase 2
+1) Generate boxes for OOD - one time
+
+2) Evaluate KNN debug
+python src/evaluate_multimodal.py --project_root "F:\Project" --ckpt checkpoints\layoutlmv3_debug.pt
+
+3) Evaluate KNN* debug
+python src/evaluate_multimodal.py --project_root "F:\Project" --ckpt checkpoints\layoutlmv3_debug.pt --use_knn_star
+
+
+Commands Phase 3
+1. Classification comparison
+python src/compare_phase3_classification.py --project_root "F:\Project" --text_ckpt checkpoints\bert_margin_star_debug.pt --multi_ckpt checkpoints\layoutlmv3_debug.pt
+
+2. OOD comparison
+python src/compare_phase3_ood.py --project_root "F:\Project" --text_ckpt checkpoints\bert_margin_star_debug.pt --multi_ckpt checkpoints\layoutlmv3_debug.pt
+
+3. Precision-threshold comparison
+python src/novelty_detecton_result_99PRE.py --project_root "F:\Project" --ckpt_dir checkpoints --suffix debug
+python src/novelty_detecton_result_99PRE_multimodal.py --project_root "F:\Project" --ckpt checkpoints\layoutlmv3_debug.pt
+
+
+
+mapped file name:
+make_table2.py -> compare_classificaton_result.py
+make_table3.py -> novelty_detection_result.py
+make_precision99_table.py -> novelty_detection_result_99PRE.py
+make_precision99_table_multimodal.py -> novelty_detection_result_99PRE_multimodal.py
+make_table5_knn_star.py -> rejection_effectiveness.py
+train_multimodal_phase1.py -> train_multimodal.py
+classification_eval_multimodal_phase1.py -> classification_eval_multimodal.py
+evaluate_multimodal_phase2.py -> evaluate_multimodal.py
+compare_phase3_classification.py -> compare_classification_result_multimodal.py
+compare_phase3_ood.py -> compare_ood_multimodal.py
+compare_phase3_precision.py -> compare_precision_multimodal.py
+
+
+
